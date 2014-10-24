@@ -374,6 +374,312 @@ public class BillTest {
 	}
 
 	/**
+	 * 9. firstReading test 3
+	 */
+	@Test
+	public void testFirstReadingwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.withdraw();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 9. firstReading test 5
+	 */
+	@Test
+	public void testFirstReadingvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+
+		assertEquals(BillState.inHouseOfCommons, getBillState(b));
+		assertEquals(BillStateInHouseOfCommons.secondReading, getBillStateInHouseOfCommons(b));
+	}
+
+	/**
+	 * 9. firstReading test 6
+	 */
+	@Test
+	public void testFirstReadingvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 9. firstReading test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testFirstReadingsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		assertEquals(BillState.inHouseOfCommons, getBillState(b));
+
+		BillStateInHouseOfCommons expected = BillStateInHouseOfCommons.firstReading;
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+	}
+
+	/**
+	 * 10. secondReading test 3
+	 */
+	@Test
+	public void testsecondReadingwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.withdraw();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 10. secondReading test 5
+	 */
+	@Test
+	public void testsecondReadingvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+
+		assertEquals(BillState.inHouseOfCommons, getBillState(b));
+		assertEquals(BillStateInHouseOfCommons.committeeConsideration,
+				getBillStateInHouseOfCommons(b));
+	}
+
+	/**
+	 * 10. secondReading test 6
+	 */
+	@Test
+	public void testsecondReadingvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 10. secondReading test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testsecondReadingsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+
+		BillStateInHouseOfCommons expected = BillStateInHouseOfCommons.secondReading;
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+	}
+
+	/**
+	 * 11. committeeConsideration test 5
+	 */
+	@Test
+	public void testcommitteeConsiderationvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+
+		assertEquals(BillState.inHouseOfCommons, getBillState(b));
+		assertEquals(BillStateInHouseOfCommons.thirdReading, getBillStateInHouseOfCommons(b));
+	}
+
+	/**
+	 * 11. committeeConsideration test 6
+	 */
+	@Test
+	public void testcommitteeConsiderationvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 11. committeeConsideration test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testcommitteeConsiderationsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+
+		BillStateInHouseOfCommons expected = BillStateInHouseOfCommons.committeeConsideration;
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+	}
+	
+	/**
+	 * 12. thirdReading test 3
+	 */
+	@Test
+	public void testthirdReadingwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.withdraw();
+		
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+	
+	/**
+	 * 12. thirdReading test 5
+	 */
+	@Test
+	public void testthirdReadingvotePassesIsCommonBill() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.setIsCommonsBill(true);
+
+		assertEquals(BillState.inSenate, getBillState(b));
+		assertEquals(BillStateInSenate.firstReadingS, getBillStateInSenate(b));
+
+	}
+	
+	/**
+	 * 12. thirdReading test 6
+	 */
+	@Test
+	public void testThirdReadingvotePassesIsNOTCommonBill() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.setIsCommonsBill(false);
+		
+		assertEquals(BillState.awaitingRoyalAssent, getBillState(b));
+	}
+
+	/**
+	 * 12. thirdReading test 7
+	 */
+	@Test
+	public void testThirdReadingvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 12. thirdReading test 1, 2, 4 and 8
+	 */
+	@Test
+	public void testThirdReadingsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+
+		BillStateInHouseOfCommons expected = BillStateInHouseOfCommons.thirdReading;
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInHouseOfCommons(b));
+	}
+	
+	/**
 	 * Uses reflection to avoid modifying the code. Gets the bill state.
 	 * 
 	 * @param b
