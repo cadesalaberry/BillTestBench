@@ -304,8 +304,8 @@ public class BillTest {
 		b.votePasses();
 		b.votePasses();
 		b.votePasses();
-		b.votePasses();
 		b.setIsCommonsBill(true);
+		b.votePasses();
 
 		assertEquals(BillState.awaitingRoyalAssent, getBillState(b));
 	}
@@ -322,8 +322,8 @@ public class BillTest {
 		b.votePasses();
 		b.votePasses();
 		b.votePasses();
-		b.votePasses();
 		b.setIsCommonsBill(false);
+		b.votePasses();
 
 		assertEquals(BillState.inHouseOfCommons, getBillState(b));
 		assertEquals(BillStateInHouseOfCommons.firstReading,
@@ -755,8 +755,8 @@ public class BillTest {
 		b.votePasses();
 		b.votePasses();
 		b.votePasses();
-		b.votePasses();
 		b.setIsCommonsBill(true);
+		b.votePasses();
 
 		assertEquals(BillState.inSenate, getBillState(b));
 		assertEquals(BillStateInSenate.firstReadingS, getBillStateInSenate(b));
@@ -775,8 +775,8 @@ public class BillTest {
 		b.votePasses();
 		b.votePasses();
 		b.votePasses();
-		b.votePasses();
 		b.setIsCommonsBill(false);
+		b.votePasses();
 
 		assertEquals(BillState.awaitingRoyalAssent, getBillState(b));
 	}
@@ -863,15 +863,41 @@ public class BillTest {
 	}
 
 	/**
-	 * 15. missing setters code coverage.
+	 * 15. missing code coverage in votePasses.
 	 */
 	@Test
-	public void missingSettersCodeCoverage() {
+	public void missingVotePassesCodeCoverage() {
 
 		Bill b = new Bill();
 
-		setBillState(b, BillState.actOfParliament);
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.setIsCommonsBill(false);
+		b.votePasses();
+		
+		b = new Bill();
+		b.introduceInSenate();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+		b.setIsCommonsBill(false);
+		b.votePasses();
+	}
+	
+	/**
+	 * 16. missing code coverage in votePasses.
+	 */
+	@Test
+	public void missingCommitteeConsiderationExitCodeCoverage() {
 
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.withdraw();
 	}
 
 	/**
