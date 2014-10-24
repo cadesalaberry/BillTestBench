@@ -469,6 +469,55 @@ public class BillTest {
 	}
 
 	/**
+	 * 8. withdrawn test 4
+	 */
+	@Test
+	public void testWithdrawnModify() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.voteFails();
+		b.modify();
+
+		BillState expected = BillState.inPreparation;
+		assertEquals(expected, getBillState(b));
+	}
+
+	/**
+	 * 8. withdrawn test 1, 2, 3, 5, 6 and 7
+	 */
+	@Test
+	public void testWithdrawnSneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.voteFails();
+
+		BillState expected = BillState.withdrawn;
+		assertEquals(expected, getBillState(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillState(b));
+
+		b.withdraw();
+		assertEquals(expected, getBillState(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillState(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillState(b));
+
+		b.votePasses();
+		assertEquals(expected, getBillState(b));
+
+		b.voteFails();
+		assertEquals(expected, getBillState(b));
+	}
+
+	/**
 	 * 9. firstReading test 3
 	 */
 	@Test
