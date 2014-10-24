@@ -665,6 +665,22 @@ public class BillTest {
 	}
 
 	/**
+	 * 11. committeeConsideration test 3
+	 */
+	@Test
+	public void testCommitteeConsiderationwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInHouse();
+		b.votePasses();
+		b.votePasses();
+		b.withdraw();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
 	 * 11. committeeConsideration test 5
 	 */
 	@Test
@@ -860,44 +876,6 @@ public class BillTest {
 		BillStateInHouseOfCommons.values();
 		BillStateInSenate.valueOf("firstReadingS");
 		BillStateInSenate.values();
-	}
-
-	/**
-	 * 15. missing code coverage in votePasses.
-	 */
-	@Test
-	public void missingVotePassesCodeCoverage() {
-
-		Bill b = new Bill();
-
-		b.introduceInHouse();
-		b.votePasses();
-		b.votePasses();
-		b.votePasses();
-		b.setIsCommonsBill(false);
-		b.votePasses();
-		
-		b = new Bill();
-		b.introduceInSenate();
-		b.votePasses();
-		b.votePasses();
-		b.votePasses();
-		b.setIsCommonsBill(false);
-		b.votePasses();
-	}
-	
-	/**
-	 * 16. missing code coverage in votePasses.
-	 */
-	@Test
-	public void missingCommitteeConsiderationExitCodeCoverage() {
-
-		Bill b = new Bill();
-
-		b.introduceInHouse();
-		b.votePasses();
-		b.votePasses();
-		b.withdraw();
 	}
 
 	/**
