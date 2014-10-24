@@ -112,29 +112,104 @@ public class BillTest {
 	}
 
 	/**
-	 * 1. firstReading test 1, 2, 4 and 7
+	 * 2. firstReading test 1, 2, 4 and 7
 	 */
 	@Test
-	public void testFirstReadingSneakPaths() {
+	public void testFirstReadingSsneakPaths() {
 
 		Bill b = new Bill();
 
 		b.introduceInSenate();
+		assertEquals(BillState.inSenate, getBillState(b));
 
 		BillStateInSenate expected = BillStateInSenate.firstReadingS;
-		assertEquals(expected, getBillState(b));
+		assertEquals(expected, getBillStateInSenate(b));
 
 		b.royalAssent();
-		assertEquals(expected, getBillState(b));
+		assertEquals(expected, getBillStateInSenate(b));
 
 		b.modify();
-		assertEquals(expected, getBillState(b));
+		assertEquals(expected, getBillStateInSenate(b));
 
 		b.introduceInHouse();
-		assertEquals(expected, getBillState(b));
+		assertEquals(expected, getBillStateInSenate(b));
 
 		b.introduceInSenate();
-		assertEquals(expected, getBillState(b));
+		assertEquals(expected, getBillStateInSenate(b));
+	}
+
+	/**
+	 * 3. secondReadingS test 3
+	 */
+	@Test
+	public void testSecondReadingSwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.withdraw();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 3. secondReadingS test 5
+	 */
+	@Test
+	public void testSecondReadingSvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.votePasses();
+
+		assertEquals(BillState.inSenate, getBillState(b));
+		assertEquals(BillStateInSenate.committeeConsiderationS,
+				getBillStateInSenate(b));
+	}
+
+	/**
+	 * 3. secondReadingS test 6
+	 */
+	@Test
+	public void testSecondReadingSvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 3. secondReadingS test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testSecondReadingSsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+
+		BillStateInSenate expected = BillStateInSenate.secondReadingS;
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInSenate(b));
 	}
 
 	/**
