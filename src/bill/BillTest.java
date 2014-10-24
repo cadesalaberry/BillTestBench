@@ -213,6 +213,67 @@ public class BillTest {
 	}
 
 	/**
+	 * 4. committeeConsideration test 5
+	 */
+	@Test
+	public void testCommitteeConsiderationSvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.votePasses();
+		b.votePasses();
+
+		assertEquals(BillState.inSenate, getBillState(b));
+		assertEquals(BillStateInSenate.thirdReadingS, getBillStateInSenate(b));
+	}
+
+	/**
+	 * 4. committeeConsideration test 6
+	 */
+	@Test
+	public void testCommitteeConsiderationSvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.votePasses();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 4. committeeConsideration test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testCommitteeConsiderationSsneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+		b.votePasses();
+
+		BillStateInSenate expected = BillStateInSenate.committeeConsiderationS;
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.modify();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillStateInSenate(b));
+
+		b.introduceInSenate();
+		assertEquals(expected, getBillStateInSenate(b));
+	}
+
+	/**
 	 * Uses reflection to avoid modifying the code. Gets the bill state.
 	 * 
 	 * @param b
