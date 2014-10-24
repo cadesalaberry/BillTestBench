@@ -3,6 +3,8 @@ package bill;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 
@@ -826,53 +828,125 @@ public class BillTest {
 	}
 
 	/**
+	 * 13. missing simple code coverage.
+	 */
+	@Test
+	public void missingSimpleCodeCoverage() {
+
+		Bill b = new Bill();
+		b.introduceInSenate();
+		b.voteDenied();
+
+		b = new Bill();
+		b.introduceInHouse();
+		b.voteDenied();
+
+		b = new Bill();
+		// Dummy methods.
+		b.toString();
+		b.delete();
+		b.isIsCommonsBill();
+	}
+
+	/**
+	 * 14. missing enum code coverage.
+	 */
+	@Test
+	public void missingEnumCodeCoverage() {
+
+		BillState.valueOf("withdrawn");
+		BillState.values();
+		BillStateInHouseOfCommons.valueOf("firstReading");
+		BillStateInHouseOfCommons.values();
+		BillStateInSenate.valueOf("firstReadingS");
+		BillStateInSenate.values();
+	}
+
+	/**
+	 * 15. missing setters code coverage.
+	 */
+	@Test
+	public void missingSettersCodeCoverage() {
+
+		Bill b = new Bill();
+
+		setBillState(b, BillState.actOfParliament);
+
+	}
+
+	/**
 	 * Uses reflection to avoid modifying the code. Gets the bill state.
 	 * 
 	 * @param b
 	 * @return null if not found
 	 */
 	private BillState getBillState(Bill b) {
+		return (BillState) getField(b, "billState");
+	}
+
+	/**
+	 * Uses reflection to avoid modifying the code. Sets the bill state.
+	 * 
+	 * @param b
+	 * @return null if not found
+	 */
+	private void setBillState(Bill b, BillState s) {
 
 		try {
 
 			Field f;
 			f = b.getClass().getDeclaredField("billState");
 			f.setAccessible(true);
-			return (BillState) f.get(b);
+			f.set(b, s);
 
 		} catch (IllegalAccessException | IllegalArgumentException
 				| NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}
+	}
 
-		return null;
+	/**
+	 * Uses reflection to avoid modifying the code. Sets the bill state.
+	 * 
+	 * @param b
+	 * @return null if not found
+	 */
+	private void setBillStateInHOC(Bill b, BillState s) {
+
+		try {
+
+			Method m;
+			m = b.getClass().getDeclaredMethod("billState");
+			m.setAccessible(true);
+			m.invoke(b, s);
+
+		} catch (IllegalAccessException | IllegalArgumentException
+				| SecurityException | NoSuchMethodException
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private BillStateInHouseOfCommons getBillStateInHouseOfCommons(Bill b) {
-
-		try {
-
-			Field f;
-			f = b.getClass().getDeclaredField("billStateInHouseOfCommons");
-			f.setAccessible(true);
-			return (BillStateInHouseOfCommons) f.get(b);
-
-		} catch (IllegalAccessException | IllegalArgumentException
-				| NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return (BillStateInHouseOfCommons) getField(b,
+				"billStateInHouseOfCommons");
 	}
 
 	private BillStateInSenate getBillStateInSenate(Bill b) {
+		return (BillStateInSenate) getField(b, "billStateInSenate");
+	}
 
+	private Boolean isCommonBill(Bill b) {
+		return (Boolean) getField(b, "isCommonsBill");
+	}
+
+	private Object getField(Object o, String name) {
 		try {
 
 			Field f;
-			f = b.getClass().getDeclaredField("billStateInSenate");
+			f = o.getClass().getDeclaredField(name);
 			f.setAccessible(true);
-			return (BillStateInSenate) f.get(b);
+			return f.get(o);
 
 		} catch (IllegalAccessException | IllegalArgumentException
 				| NoSuchFieldException | SecurityException e) {
@@ -881,25 +955,4 @@ public class BillTest {
 
 		return null;
 	}
-
-	private Boolean isCommonBill(Bill b) {
-
-		try {
-
-			Field f;
-			f = b.getClass().getDeclaredField("isCommonsBill");
-			f.setAccessible(true);
-			return (Boolean) f.get(b);
-
-		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 }
