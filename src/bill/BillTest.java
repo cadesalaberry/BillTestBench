@@ -49,8 +49,7 @@ public class BillTest {
 
 		Bill b = new Bill();
 
-		BillState expected = Bill.BillState.inPreparation;
-
+		BillState expected = BillState.inPreparation;
 		assertEquals(expected, getBillState(b));
 
 		b.withdraw();
@@ -66,6 +65,75 @@ public class BillTest {
 		assertEquals(expected, getBillState(b));
 
 		b.royalAssent();
+		assertEquals(expected, getBillState(b));
+	}
+
+	/**
+	 * 2. firstReading test 3
+	 */
+	@Test
+	public void testFirstReadingSwithdraw() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.withdraw();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 2. firstReading test 5
+	 */
+	@Test
+	public void testFirstReadingSvotePasses() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.votePasses();
+
+		assertEquals(BillState.inSenate, getBillState(b));
+		assertEquals(BillStateInSenate.secondReadingS, getBillStateInSenate(b));
+	}
+
+	/**
+	 * 2. firstReading test 6
+	 */
+	@Test
+	public void testFirstReadingSvoteFails() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+		b.voteFails();
+
+		assertEquals(BillState.withdrawn, getBillState(b));
+	}
+
+	/**
+	 * 1. firstReading test 1, 2, 4 and 7
+	 */
+	@Test
+	public void testFirstReadingSneakPaths() {
+
+		Bill b = new Bill();
+
+		b.introduceInSenate();
+
+		BillStateInSenate expected = BillStateInSenate.firstReadingS;
+		assertEquals(expected, getBillState(b));
+
+		b.royalAssent();
+		assertEquals(expected, getBillState(b));
+
+		b.modify();
+		assertEquals(expected, getBillState(b));
+
+		b.introduceInHouse();
+		assertEquals(expected, getBillState(b));
+
+		b.introduceInSenate();
 		assertEquals(expected, getBillState(b));
 	}
 
