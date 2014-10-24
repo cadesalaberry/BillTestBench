@@ -152,11 +152,8 @@ public class BillTest {
 			f.setAccessible(true);
 			return (BillState) f.get(b);
 
-		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException | IllegalArgumentException
+				| NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}
 
@@ -172,11 +169,8 @@ public class BillTest {
 			f.setAccessible(true);
 			return (BillStateInHouseOfCommons) f.get(b);
 
-		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException | IllegalArgumentException
+				| NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}
 
@@ -192,11 +186,8 @@ public class BillTest {
 			f.setAccessible(true);
 			return (BillStateInSenate) f.get(b);
 
-		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException | IllegalArgumentException
+				| NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}
 
